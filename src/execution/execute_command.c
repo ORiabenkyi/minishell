@@ -6,7 +6,7 @@
 /*   By: tavdiiev <tavdiiev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:10:59 by tavdiiev          #+#    #+#             */
-/*   Updated: 2024/10/15 19:08:24 by tavdiiev         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:30:33 by tavdiiev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,32 +69,32 @@ static int	execute_local_binary_or_absolute_path(t_data *data, t_command *cmd)
 	return (EXIT_FAILURE);
 }
 
-int	execute_command(t_data *data, t_command *command)
+int	execute_command(t_data *data, t_command *current_command)
 {
 	int	status;
 	
 	printf("in execute_command\n");
-	printf("command->name=%s\n", command->name);
-	if (!command || !command->name)
+	printf("command->name=%s\n", current_command->name);
+	if (!current_command || !current_command->name)
 		exit_shell(data, error_msg_command("child", NULL,
 				"parsing error: no command to execute!", EXIT_FAILURE));
-	if (!is_valid_fd_or_no_fd(command->io))
+	if (!is_valid_fd_or_no_fd(current_command->io))
 		exit_shell(data, EXIT_FAILURE);
-	redirect_io_pipe(data->cmd, command);
-	redirect_io_file(command->io);
+	redirect_io_pipe(data->cmd, current_command);
+	redirect_io_file(current_command->io);
 	close_fds(data->cmd, false);
-	if (!ft_strchr(command->name, '/'))
+	if (!ft_strchr(current_command->name, '/'))
 	{
-		status = execute_builtin(data, command);
+		status = execute_builtin(data, current_command);
 		// printf("status after execute_builtin=%d\n", status);//in case of a pipe redirection the output goes to the pipe
 		if (status != CMD_NOT_FOUND)//if it is a builtin command
 		exit_shell(data, status);
-		status = execute_external_command(data, command);
+		status = execute_external_command(data, current_command);
 		// printf("status after execute_external_command=%d\n", status);//not printed if successful
 		if (status != CMD_NOT_FOUND)
 		exit_shell(data, status);
 	}
-	status = execute_local_binary_or_absolute_path(data, command);// contains '/' or doesn't contain '/' (not builtin and not external)
+	status = execute_local_binary_or_absolute_path(data, current_command);// contains '/' or doesn't contain '/' (not builtin and not external)
 	exit_shell(data, status);
 	return (status);
 }
