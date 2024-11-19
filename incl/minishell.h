@@ -6,7 +6,7 @@
 /*   By: tavdiiev <tavdiiev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 13:26:32 by irsander          #+#    #+#             */
-/*   Updated: 2024/10/21 18:01:40 by tavdiiev         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:43:09 by tavdiiev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ char	*get_env_value(char **env, char *key);
 
 // execute.c
 int			execute(t_data *data);
-int			execute_command(t_data *data, t_command *cmd);
+int			execute_command(t_data *data, t_command *current_command);
+
 int			execute_builtin(t_data *data, t_command *cmd);
 // error.c
 int			error_msg_command(char *command, char *detail, char *error_message, int error_number);
@@ -117,8 +118,8 @@ bool	redirect_io_file(t_io *io);
 bool	restore_stdin_stdout_close_copies(t_io *io);
 //pipe.c
 bool	create_pipes(t_data *data);
-void	close_pipe_fds(t_command *cmds, t_command *this_cmd);
-bool	redirect_io_pipe(t_command *cmds, t_command *this_cmd);
+void	close_pipe_fds(t_command *command_list, t_command *current_command);
+bool	redirect_io_pipe(t_command *command_list, t_command *current_command);
 //exit_shell.c
 void	exit_shell(t_data *data, int exit_number);
 #endif
