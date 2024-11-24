@@ -217,7 +217,7 @@ int main(int argc, char **argv, char **envp)
             free(data.user_input);  // Free empty input
             continue;                // Skip this loop iteration
         }
-    //     // Optionally, free cmd1 or data.cmd if you need to ensure it is cleared
+    //// Optionally, free cmd1 or data.cmd if you need to ensure it is cleared
     //     // Make sure to free each command correctly
     }
 
