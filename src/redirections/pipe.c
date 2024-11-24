@@ -22,7 +22,8 @@ bool	create_pipes(t_data *data)
 	{
 		printf("in while create pipes\n");
 		printf("curr_command->name=%s\n", curr_command->name);
-		if (curr_command->next)
+		//curr_command->is_piped || (curr_command->prev && curr_command->prev->is_piped)
+		if (curr_command->next)//todo
 		{
 			printf("in if create pipes\n");
 			curr_command->pipe_fd = malloc(sizeof(*curr_command->pipe_fd) * 2);

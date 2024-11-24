@@ -16,7 +16,6 @@ static void update_working_dirs(t_data *data, char *current_working_dir)
 {
 	set_env(data, "OLDPWD", get_env_value(data->env, "PWD"));
 	set_env(data, "PWD", current_working_dir);
-	free(current_working_dir);
 }
 
 /*
@@ -33,24 +32,21 @@ static	int	chdir_error_msg(char *path)
 	return (EXIT_FAILURE);
 }
 
-static	int change_directory(t_data *data, char *path)
+static int change_directory(t_data *data, char *path)
 {
-	char	buf[PATH_MAX];
-	char	*current_working_dir;
+    char buf[PATH_MAX];
 
-	if (chdir(path) != 0)
-		return (chdir_error_msg(path));
-	current_working_dir = getcwd(buf, PATH_MAX);
-	printf("change_directory: cwd=%s\n", current_working_dir);
-	if (!current_working_dir)
-	{
-		error_msg_command("cd: error retrieving current directory",
-	"getcwd: cannot access parent directories",	strerror(errno), errno);
-	}
-	else
-		current_working_dir = ft_strdup(buf);
-	update_working_dirs(data, current_working_dir);
-	return (EXIT_SUCCESS);
+    if (chdir(path) != 0)
+        return (chdir_error_msg(path));
+    if (!getcwd(buf, PATH_MAX))
+    {
+        error_msg_command("cd: error retrieving current directory",
+            "getcwd: cannot access parent directories", strerror(errno), errno);
+        return (EXIT_FAILURE);
+    }
+    printf("in change_directory: cwd=%s\n", buf);
+    update_working_dirs(data, buf);
+    return (EXIT_SUCCESS);
 }
 
 int	cd(t_data *data, char ** args)

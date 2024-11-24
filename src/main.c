@@ -154,83 +154,73 @@ void lst_add_front_cmd(t_command **list, t_command *cmd1)
 	*list = cmd1;
 }
 
-int main(int argc, char **argv, char **envp)
+void free_command(t_command *cmd) {
+    if (cmd) {
+        if (cmd->args) {
+            for (int i = 0; cmd->args[i]; i++)
+                free(cmd->args[i]);  // Free each argument string
+            free(cmd->args);         // Free the arguments array
+        }
+        if (cmd->name)
+            free(cmd->name);         // Free the command name
+        if (cmd->io)
+            free(cmd->io);           // Free the IO structure if dynamically allocated
+        free(cmd);                   // Free the command itself
+    }
+}
+
+void free_command_list(t_command *cmd_list) {
+    t_command *tmp;
+    while (cmd_list) {
+        tmp = cmd_list;
+        cmd_list = cmd_list->next;
+        free_command(tmp);
+    }
+}
+
+int main(int argc, char **argv, char **envp) 
 {
     t_data data;
 
     (void)argc;
-	(void)argv;
+    (void)argv;
 
     ft_memset(&data, 0, sizeof(data));
     if (!init_data(&data, envp))
         exit_shell(NULL, EXIT_FAILURE);
+
     while (1)
-	{
+    {
+
+		free_command_list(data.cmd);  // Free previous commands
+        data.cmd = NULL;  			
+           // Reset the command list
         data.user_input = readline(PROMPT);
-		printf("data.user_input = %s\n",  data.user_input);
-		char **input_strings = ft_split(data.user_input, ' ');
-		t_command *cmd1 = lst_new_cmd(false);
-		cmd1->args = input_strings;
-		printf("data=%p\ndata.cmd=%p\n", &data, data.cmd);
-		init_io(cmd1);
-		// open_infile(cmd1->io, "infile");//grep li and output it to outfile (works)
-		lst_add_front_cmd(&data.cmd, cmd1);
-		// lst_add_back_cmd(&data.cmd, cmd1);
-		cmd1->name = cmd1->args[0];
-		// open_outfile(cmd1->io, "outfile");
-	
-	// printf("cmd1->args[0]=%s\n", cmd1->args[0]);
-	// printf("cmd1->args[2]=%s\n", cmd1->args[2]);
-	// int i = 0;
-	// while (cmd1->args[i])
-// printf("cmd1->args=%s ", cmd1->args[i++]);
-// printf("\n");
-// 	  free(data.user_input);
-// 		printf("data.cmd->name=%s\n", data.cmd->name);
-// 	//------------------command2-------------------
-	// add_pipe(&data.cmd);
-	// t_command *cmd2 = lst_new_cmd(false);
-	// cmd2->args = &input_strings[2];
-    // lst_add_front_cmd(&data.cmd, cmd2);//need to add back
-	// init_io(cmd2);
-	//  cmd2->name = cmd2->args[0];
-//         // printf("Command: %s\n", data.cmd->name);
-//         // printf("Is Piped: %d\n", data.cmd->is_piped);
-// 	int i = 0;
-// 	printf("cmd2->args=%s ", cmd2->args[i++]);
-// printf("\n");
-// 	printf("cmd2->args[0]=%s\n", cmd2->args[0]);
-// 	printf("cmd2->args[1]=%s\n", cmd2->args[1]);
-	//-------------------if added back------------------------
-		// 	t_command *current_cmd = data.cmd;
-		// 	t_command *cur2 = current_cmd;
-		// 	if (current_cmd)
-		// 	{
-		// printf("Command: %s\n", current_cmd->name);
-		// printf("Is Piped: %d\n", current_cmd->is_piped);
-		// 	   if (execute(&data) == -1)
-    	//         printf("Command execution failed\n");		
-		// 	current_cmd = current_cmd->next;
-		// 	free(cur2->name);
-		// 	}
-				if (execute(&data) == -1)
-    	        printf("Command execution failed\n");
-			free(data.cmd->name);
-        // free(data.user_input);
-		// printf("data.cmd->name=%s\n", data.cmd->name);
+        if (!data.user_input)        // Handle EOF (Ctrl+D)
+            break;
+        printf("data.user_input = %s\n", data.user_input);
+        char **input_strings = ft_split(data.user_input, ' ');
+        t_command *cmd1 = lst_new_cmd(false);
+        cmd1->args = input_strings;//command args including command name
+        cmd1->name = ft_strdup(cmd1->args[0]);//fails when the input is empty, Duplicate string for safety
+        // printf("cmd1->args[0]=%s\n", cmd1->args[0]);
+        init_io(cmd1);
+        lst_add_front_cmd(&data.cmd, cmd1);
 
-		
-		// data.cmd->name = NULL;
+        if (execute(&data) == -1)
+            printf("Command execution failed\n");
 
-
-		
-		// if (cmd1->args)
-		// free_str_arr(cmd1->args);
-		// free_str_arr(input_strings);
-		// free_data(&data);
-
-	
+        // // free(data.user_input);  // Free input
+        // // data.user_input = NULL;
+    if (data.user_input[0] == '\0')  // Skip if input is empty
+        {
+            free(data.user_input);  // Free empty input
+            continue;                // Skip this loop iteration
+        }
+    //     // Optionally, free cmd1 or data.cmd if you need to ensure it is cleared
+    //     // Make sure to free each command correctly
     }
 
+    // free_command_list(data.cmd);  // Cleanup at the end
     return 0;
 }

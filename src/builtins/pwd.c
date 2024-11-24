@@ -15,14 +15,12 @@
 int pwd(void)
 {
 	char	buf[PATH_MAX];
-	char	*current_working_dir;
 
-	current_working_dir = getcwd(buf, PATH_MAX);
-	if (!current_working_dir)
+	if (!getcwd(buf, PATH_MAX))
 		error_msg_command("pwd", NULL, strerror(errno), errno);
 	else
 	{
-		ft_putendl_fd(current_working_dir, STDOUT_FILENO);
+		ft_putendl_fd(buf, STDOUT_FILENO);
 		return (EXIT_SUCCESS);		
 	}
 	return (EXIT_FAILURE);

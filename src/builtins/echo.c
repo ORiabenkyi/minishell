@@ -12,12 +12,12 @@
 
 #include "../../incl/minishell.h"
 
-static bool is_n(char *arg)
+static bool is_only_n(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (arg[i] != '-')
+	if (arg[i] != '-' || (arg[i] == '-' && arg[i + 1] == '\0'))
 		return (false);
 	i++;
 	while (arg[i] && arg[i] == 'n')
@@ -40,7 +40,7 @@ static void	print_args(char **args, bool is_n, int i)
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		else if (!args[i + 1] && !is_n)
-				ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
@@ -48,15 +48,15 @@ static void	print_args(char **args, bool is_n, int i)
 int	echo(char **args)
 {
 	int		i;
-	bool	is_n_fl;
+	bool	is_only_n_fl;
 
-	is_n_fl = false;
+	is_only_n_fl = false;
 	i = 1;
-	while (args[i] && is_n(args[i]))
+	while (args[i] && is_only_n(args[i]))
 	{
-		is_n_fl = true;
+		is_only_n_fl = true;
 		i++;
 	}
-	print_args(args, is_n_fl, i);
+	print_args(args, is_only_n_fl, i);
 	return (EXIT_SUCCESS);
 }
