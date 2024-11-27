@@ -109,7 +109,7 @@ void	free_char_arr(char **tab);
 void	close_fds(t_command *cmd_list, bool close_copies);
 //utils.c
 bool	command_is_dir(char *command_name);
-int		is_command_not_found(t_data *data, t_command *command);
+int		is_command_not_found_or_not_executable(t_data *data, t_command *command);
 //execution/get_path.c
 char	*get_valid_command_path(t_data *data, char *command_name);
 //io.c

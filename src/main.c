@@ -193,7 +193,7 @@ int main(int argc, char **argv, char **envp)
     {
 
 		free_command_list(data.cmd);  // Free previous commands
-        data.cmd = NULL;  			
+        data.cmd = NULL;
            // Reset the command list
         data.user_input = readline(PROMPT);
         if (!data.user_input)        // Handle EOF (Ctrl+D)

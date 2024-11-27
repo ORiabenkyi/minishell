@@ -12,6 +12,8 @@
 
 #include "../../incl/minishell.h"
 
+//check if there's only one '-' 
+//followed by one or multiple 'n' in the string
 static bool is_only_n(char *arg)
 {
 	int	i;
@@ -27,9 +29,9 @@ static bool is_only_n(char *arg)
 	return (false);
 }
 
-static void	print_args(char **args, bool is_n, int i)
+static void	print_args(char **args, bool is_only_n_fl, int i)
 {
-	if (!args[i] && !is_n)
+	if (!args[i] && !is_only_n_fl)
 	{
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	return ;
@@ -39,12 +41,14 @@ static void	print_args(char **args, bool is_n, int i)
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
-		else if (!args[i + 1] && !is_n)
+		else if (!args[i + 1] && !is_only_n_fl)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
 
+//echo -nnnn -n string and echo -n -n -n -n string
+//same as echo -n string
 int	echo(char **args)
 {
 	int		i;

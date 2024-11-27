@@ -1,0 +1,12 @@
+libft/libft.a
+libft.a
+.vscode
+a.out
+*.o
+minishell
+infile
+outfile
+outfile2
+practice.c
+build
+main

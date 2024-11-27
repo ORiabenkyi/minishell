@@ -61,7 +61,7 @@ static int	execute_local_binary_or_absolute_path(t_data *data, t_command *cmd)
 	printf("in execute_local_binary_or_absolute_path\n");
 	int status;
 
-	status = is_command_not_found(data, cmd);
+	status = is_command_not_found_or_not_executable(data, cmd);
 	if (status)
 		return (status);
 	if (execve(cmd->name, cmd->args, data->env) == -1)

@@ -67,7 +67,6 @@ static int	create_children(t_data *data)
 	t_command	*current_command;
 
 printf("in create_children\n");
-// int status_execute_command = 545;
 	current_command = data->cmd;
 	while (data->pid != 0 && current_command)
 	{
@@ -75,14 +74,9 @@ printf("in create_children\n");
 		if (data->pid == -1)
 			return (error_msg_command("fork", NULL, strerror(errno), EXIT_FAILURE));
 		else if (data->pid == 0)
-		{
-			printf("in child process before execute_command\n");
-			execute_command(data, current_command);//status_execute_command = 
-		}
+			execute_command(data, current_command);
 		current_command = current_command->next;
 	}
-	// if (data->pid != 0)
-	// printf("parent: status_execute_command = %d\n", status_execute_command);
 	return (wait_children(data));
 }
 

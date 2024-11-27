@@ -22,7 +22,7 @@ bool	command_is_dir(char *command_name)
 	return (S_ISDIR(file_info.st_mode));
 }
 
-int	is_command_not_found(t_data *data, t_command *command)
+int	is_command_not_found_or_not_executable(t_data *data, t_command *command)
 {
 	if (!ft_strchr(command->name, '/') && get_env_index(data->env, "PATH") != -1)
 		return (error_msg_command(command->name, NULL, "command not found", 
