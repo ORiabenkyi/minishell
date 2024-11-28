@@ -12,17 +12,17 @@
 
 #include "../../incl/minishell.h"
 
-bool	is_valid_key(char *key)
+bool	is_valid_key(char *arg)
 {
 	int i;
 
 	i = 0;
-	if (!ft_isalpha(key[i]) && key[i] != '_')
+	if (!ft_isalpha(arg[i]) && arg[i] != '_')
 		return (false);
 	i++;
-	while (key[i] && key[i] != '=')
+	while (arg[i] && arg[i] != '=')
 	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 			return (false);
 		i++;
 	}

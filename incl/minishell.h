@@ -84,7 +84,7 @@ int			unset(t_data *data, char **args);
 int			cd(t_data *data, char ** args);
 int			ft_exit(t_data *data, char **args);
 
-bool		is_valid_key(char *key);
+bool		is_valid_key(char *arg);
 int			get_env_index(char **env, char *key);
 int			env_var_count(char **env);
 char		*get_env_value(char **env, char *key);
