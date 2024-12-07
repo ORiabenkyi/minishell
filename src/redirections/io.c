@@ -31,17 +31,17 @@ bool	redirect_io_file(t_io *io)
 	int	status;
 
 	printf("in redirect_io_file\n");
-	printf("io->fd_infile=%d\n", io->fd_infile);
-	printf("io->fd_outfile=%d\n", io->fd_outfile);
-	printf("io->stdin_copy=%d\n", io->stdin_copy);
-	printf("io->stdout_copy=%d\n", io->stdout_copy);
+	// printf("io->fd_infile=%d\n", io->fd_infile);
+	// printf("io->fd_outfile=%d\n", io->fd_outfile);
+	// printf("io->stdin_copy=%d\n", io->stdin_copy);
+	// printf("io->stdout_copy=%d\n", io->stdout_copy);
 	status = true;
 	if (!io)
 		return (status);
 	io->stdin_copy = dup(STDIN_FILENO);
 	if (io->stdin_copy == -1)
 		status = error_msg_command("dup", "stdin_copy", strerror(errno), false);
-	printf("io->stdin_copy=%d\n", io->stdin_copy);
+	// printf("io->stdin_copy=%d\n", io->stdin_copy);
 	io->stdout_copy = dup(STDOUT_FILENO);
 	if (io->stdout_copy == -1)
 		status = error_msg_command("dup", "stdout_copy", strerror(errno), false);
